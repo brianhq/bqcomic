@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- All Odin Sphere content (c) Atlus U.S.A. and Vanillaware -->
+<html>
+<head>
+<meta name="generator" content="HTML Tidy for Linux (vers 6 November 2007), see www.w3.org">
+<title>bqComic Demo | brianhquach.com</title>
+<link type="text/css" href="../css/custom-theme/jquery-ui-1.8.2.custom.css" rel="stylesheet">
+<link type="text/css" href="../css/main.css" rel="stylesheet">
+<script type="text/javascript" src="../js/bqcomic-0.1.js"></script>
+<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript">
+	//content for the comic
+	addline(0, "Cornelius", "cornelius.jpg", "Your promise gives me strength.", "panel3.jpg");
+	addline(1, "Gwendolyn", "gwendlyn.jpg", "The Valkyries suffered many casualties...<br/>...including Griselda, our commander.", "panel1.jpg");
+	addline(2, "Mercedes", "mercedes.jpg", "I just want to improve my skills with the bow, so I can join you on the battlefield.", "panel4.jpg");
+	addline(3, "Oswald", "ozwald.jpg", "So he is after the Cauldron.<br>The general people spoke the truth. The invasion is almost here.", "panel2.jpg");
+	addline(4, "Velvet", "velvet.jpg", ">> Velvet did not want to believe Wagner... but without his aid she would quickly run out of leads.", "panel5.jpg");
+	
+	//code for page functionality
+	$(document).ready(function(){
+		//initialize page
+		var linenum = 0;
+		$("#prev, #next, #dialog div, #panel").hide().animate({"opacity": "0"}, "fast");
+		
+		//navigation effects
+		$("#prev").hover(function(){
+			$(this).animate({"opacity": "1"}, "fast");
+		},function(){
+			$(this).animate({"opacity": "0"}, "fast");
+		});
+		$("#next").hover(function(){
+			$(this).animate({"opacity": "1"}, "fast");
+		},function(){
+			$(this).animate({"opacity": "0"}, "fast");
+		});
+		
+		//navigation functionality
+		$("#prev").click(function(){
+			if(linenum > 0){
+				linenum--;
+				update(linenum);
+			}
+		});
+		$("#next").click(function(){
+			if(linenum < lines.length-1){
+				linenum++;
+				update(linenum);
+			}
+		});
+		
+		//**CUSTOM CODE**//
+		// slider to act as lock for the book
+		$("#slider").slider({
+			value: 100,
+			orientation: "vertical",
+			range: "min",
+			animate: true
+		});
+		
+		//button to unlock the book
+		$("button").button().click(function(){
+			if($("#slider").slider("value") == 0){
+				$("#dialog > p").remove();
+				$(".unlock").animate({"opacity": "0"}, "1");
+				$("#prev, #next, #panel").show();
+				$("#dialog div").show().animate({"opacity": "1"}, "slow");
+				
+				//load first line
+				update(linenum);
+			}
+		});
+	});
+</script>
+<style type="text/css">
+	#slider {
+		height: 440px;
+		position: relative;
+		left: 350px;
+		top: 5px;
+		margin: 0 auto;
+	}
+	#help {
+		width: 430px;
+		color: #999999;
+		padding: 5px;
+		margin: 0 auto;
+		border: 1px solid #CCCCCC;
+		background: rgba(50, 59, 50, 1.0);
+	}
+	.unlock {
+		background: rgba(0, 0, 0, 1.0);
+		text-align: center;
+	}
+	.unlock-button {
+		height: 400px;
+		position: absolute;
+		top: 50%;
+		left: -20px;
+		z-index: 9;
+	}
+</style>
+<title></title>
+</head>
+<body>
+<div id="main">
+	<div id="frame">
+		<div class="unlock" id="slider">
+			<div class="unlock-button"><button><span class="ui-icon ui-icon-locked"></span></button></div>
+		</div>
+		<div id="panel"></div>
+		<div id="prev"><a href="#"></a></div>
+		<div id="next"><a href="#"></a></div>
+	</div>
+		<div id="dialog">
+		<p> >> A tome, titled "The Bitter Tale of Odin", lies before you. Slide the latch to unlock it.</p>
+		<div id="portrait"></div>
+		<div id="speaker"></div>
+		<div id="lines"></div>
+	</div>
+	<br/>
+	<div id="help">
+	Instructions<br/>
+	=================<br/>
+	*To unlock the "book", move the slider all the way down, then click the lock button.<br/>
+	*To navigate from panel to panel, hover over the left or right side of the panel, and click to go to the previous or next panel, respectively.<br/>
+	</div>
+</div>
+</body>
+</html>
